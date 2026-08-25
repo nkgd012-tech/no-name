@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>GB300 Web Emulator</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="console">
+
+    <!-- SCREEN -->
+    <div id="screen">
+
+        <!-- BOOT -->
+        <div id="bootScreen">
+
+            <div class="boot-logo">
+                GB300
+            </div>
+
+            <div class="boot-line">
+                <span id="bootText">
+                    POWER ON
+                </span>
+            </div>
+
+            <div class="progress">
+                <div id="progressBar"></div>
+            </div>
+
+        </div>
+
+
+        <!-- OS -->
+        <div id="os" class="hidden">
+
+            <header>
+
+                <div class="os-title">
+                    GB300
+                </div>
+
+                <div class="os-status">
+                    ● ONLINE
+                </div>
+
+            </header>
+
+
+            <main>
+
+                <div class="platform">
+
+                    <button
+                        class="menu-item selected"
+                        data-index="0">
+                        <span class="icon">🎮</span>
+                        <span>GAMES</span>
+                    </button>
+
+                    <button
+                        class="menu-item"
+                        data-index="1">
+                        <span class="icon">★</span>
+                        <span>FAVORITES</span>
+                    </button>
+
+                    <button
+                        class="menu-item"
+                        data-index="2">
+                        <span class="icon">◷</span>
+                        <span>LAST PLAYED</span>
+                    </button>
+
+                    <button
+                        class="menu-item"
+                        data-index="3">
+                        <span class="icon">⚙</span>
+                        <span>TOOLS</span>
+                    </button>
+
+                </div>
+
+                <div id="info">
+
+                    <div class="info-title">
+                        GB300 WEB SYSTEM
+                    </div>
+
+                    <div id="infoText">
+                        Use the D-Pad to navigate.
+                        Press A to select.
+                    </div>
+
+                </div>
+
+            </main>
+
+
+            <footer>
+
+                <span>
+                    D-PAD: MOVE
+                </span>
+
+                <span>
+                    A: SELECT
+                </span>
+
+                <span>
+                    B: BACK
+                </span>
+
+            </footer>
+
+        </div>
+
+    </div>
+
+
+    <!-- HARDWARE CONTROLS -->
+
+    <div class="hardware">
+
+        <!-- D-PAD -->
+
+        <div class="dpad">
+
+            <button
+                class="dpad-button up"
+                data-key="ArrowUp">
+                ▲
+            </button>
+
+            <button
+                class="dpad-button down"
+                data-key="ArrowDown">
+                ▼
+            </button>
+
+            <button
+                class="dpad-button left"
+                data-key="ArrowLeft">
+                ◀
+            </button>
+
+            <button
+                class="dpad-button right"
+                data-key="ArrowRight">
+                ▶
+            </button>
+
+        </div>
+
+
+        <!-- CENTER BUTTONS -->
+
+        <div class="center-buttons">
+
+            <button
+                class="system-button"
+                data-key="Select">
+                SELECT
+            </button>
+
+            <button
+                class="system-button"
+                data-key="Start">
+                START
+            </button>
+
+        </div>
+
+
+        <!-- ABXY -->
+
+        <div class="face-buttons">
+
+            <button
+                class="face x"
+                data-key="x">
+                X
+            </button>
+
+            <button
+                class="face y"
+                data-key="y">
+                Y
+            </button>
+
+            <button
+                class="face a"
+                data-key="a">
+                A
+            </button>
+
+            <button
+                class="face b"
+                data-key="b">
+                B
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>

@@ -56,165 +56,43 @@
 
             <main>
 
-                <div class="platform">
+               <div class="platform">
 
-                    <button
-                        class="menu-item selected"
-                        data-index="0">
-                        <span class="icon">🎮</span>
-                        <span>GAMES</span>
-                    </button>
+    <button class="menu-item selected" data-index="0">
+        <span class="icon">🎮</span>
+        <span>GAMES</span>
+    </button>
 
-                    <button
-                        class="menu-item"
-                        data-index="1">
-                        <span class="icon">★</span>
-                        <span>FAVORITES</span>
-                    </button>
+    <button class="menu-item" data-index="1">
+        <span class="icon">💾</span>
+        <span>ROMS</span>
+    </button>
 
-                    <button
-                        class="menu-item"
-                        data-index="2">
-                        <span class="icon">◷</span>
-                        <span>LAST PLAYED</span>
-                    </button>
+    <button class="menu-item" data-index="2">
+        <span class="icon">★</span>
+        <span>FAVORITES</span>
+    </button>
 
-                    <button
-                        class="menu-item"
-                        data-index="3">
-                        <span class="icon">⚙</span>
-                        <span>TOOLS</span>
-                    </button>
+    <button class="menu-item" data-index="3">
+        <span class="icon">◷</span>
+        <span>LAST PLAYED</span>
+    </button>
 
-                </div>
-
-                <div id="info">
-
-                    <div class="info-title">
-                        GB300 WEB SYSTEM
-                    </div>
-
-                    <div id="infoText">
-                        Use the D-Pad to navigate.
-                        Press A to select.
-                    </div>
-
-                </div>
-
-            </main>
-
-
-            <footer>
-
-                <span>
-                    D-PAD: MOVE
-                </span>
-
-                <span>
-                    A: SELECT
-                </span>
-
-                <span>
-                    B: BACK
-                </span>
-
-            </footer>
-
-        </div>
-
-    </div>
-
-
-    <!-- HARDWARE CONTROLS -->
-
-    <div class="hardware">
-
-        <!-- D-PAD -->
-
-        <div class="dpad">
-
-            <button
-                class="dpad-button up"
-                data-key="ArrowUp">
-                ▲
-            </button>
-
-            <button
-                class="dpad-button down"
-                data-key="ArrowDown">
-                ▼
-            </button>
-
-            <button
-                class="dpad-button left"
-                data-key="ArrowLeft">
-                ◀
-            </button>
-
-            <button
-                class="dpad-button right"
-                data-key="ArrowRight">
-                ▶
-            </button>
-
-        </div>
-
-
-        <!-- CENTER BUTTONS -->
-
-        <div class="center-buttons">
-
-            <button
-                class="system-button"
-                data-key="Select">
-                SELECT
-            </button>
-
-            <button
-                class="system-button"
-                data-key="Start">
-                START
-            </button>
-
-        </div>
-
-
-        <!-- ABXY -->
-
-        <div class="face-buttons">
-
-            <button
-                class="face x"
-                data-key="x">
-                X
-            </button>
-
-            <button
-                class="face y"
-                data-key="y">
-                Y
-            </button>
-
-            <button
-                class="face a"
-                data-key="a">
-                A
-            </button>
-
-            <button
-                class="face b"
-                data-key="b">
-                B
-            </button>
-
-        </div>
-
-    </div>
+    <button class="menu-item" data-index="4">
+        <span class="icon">⚙</span>
+        <span>TOOLS</span>
+    </button>
 
 </div>
 
+<div id="romBrowser" class="hidden">
 
-<script src="app.js"></script>
+    <div class="browser-title">
+        ROMS
+    </div>
 
-</body>
-</html>
+    <div id="systems"></div>
+
+    <div id="romList" class="hidden"></div>
+
+</div>

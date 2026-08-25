@@ -1,0 +1,726 @@
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background:
+        radial-gradient(
+            circle at center,
+            #182331 0%,
+            #080c12 55%,
+            #000000 100%
+        );
+
+    color: white;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   CONSOLE
+========================= */
+
+#console {
+
+    width: min(1100px, 96vw);
+
+    height: min(760px, 96vh);
+
+    background:
+        linear-gradient(
+            145deg,
+            #1b2633,
+            #0b1119
+        );
+
+    border:
+        3px solid #263748;
+
+    border-radius: 35px;
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.8),
+        inset 0 0 40px rgba(0,0,0,.7);
+
+    position: relative;
+
+    padding: 25px;
+
+}
+
+
+/* =========================
+   SCREEN
+========================= */
+
+#screen {
+
+    width: 100%;
+    height: 72%;
+
+    background: #000;
+
+    border:
+        4px solid #101923;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    position: relative;
+
+    box-shadow:
+        inset 0 0 35px #000,
+        0 0 10px #000;
+
+}
+
+
+/* =========================
+   BOOT
+========================= */
+
+#bootScreen {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    background: #020509;
+}
+
+
+.boot-logo {
+
+    font-size:
+        clamp(50px, 9vw, 100px);
+
+    font-weight: 900;
+
+    letter-spacing: 10px;
+
+    color: #eaf7ff;
+
+    text-shadow:
+        0 0 10px #35baff,
+        0 0 30px #168bd0;
+
+}
+
+
+.boot-line {
+
+    margin-top: 25px;
+
+    color: #6d8196;
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+
+}
+
+
+.progress {
+
+    width: 280px;
+
+    height: 4px;
+
+    background: #14202c;
+
+    margin-top: 18px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+}
+
+
+#progressBar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #35baff;
+
+    box-shadow:
+        0 0 10px #35baff;
+
+    transition:
+        width .25s linear;
+
+}
+
+
+/* =========================
+   OS
+========================= */
+
+#os {
+
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+
+    grid-template-rows:
+        55px 1fr 35px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #07101a,
+            #0c1825
+        );
+
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+
+header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    border-bottom:
+        1px solid #25384b;
+
+    background:
+        rgba(8,15,24,.9);
+
+}
+
+
+.os-title {
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+}
+
+
+.os-status {
+
+    font-size: 11px;
+
+    color: #57e58e;
+
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+main {
+
+    padding: 25px;
+
+    overflow: auto;
+
+}
+
+
+.platform {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(120px, 1fr));
+
+    gap: 15px;
+
+}
+
+
+.menu-item {
+
+    height: 145px;
+
+    border:
+        2px solid #25384b;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #101d2b,
+            #0a121c
+        );
+
+    color: #cbd8e5;
+
+    cursor: pointer;
+
+    transition:
+        transform .12s,
+        border-color .12s,
+        background .12s;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+
+.menu-item .icon {
+
+    font-size: 40px;
+
+}
+
+
+.menu-item span:last-child {
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+}
+
+
+.menu-item.selected {
+
+    border-color: #38baff;
+
+    background:
+        linear-gradient(
+            145deg,
+            #15334a,
+            #0c1d2d
+        );
+
+    color: white;
+
+    transform:
+        scale(1.035);
+
+    box-shadow:
+        0 0 20px rgba(56,186,255,.22);
+
+}
+
+
+#info {
+
+    margin-top: 25px;
+
+    padding: 18px;
+
+    border:
+        1px solid #24384b;
+
+    border-radius: 10px;
+
+    background: #08111b;
+
+}
+
+
+.info-title {
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+}
+
+
+#infoText {
+
+    margin-top: 8px;
+
+    color: #8398ac;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+}
+
+
+footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 15px;
+
+    border-top:
+        1px solid #25384b;
+
+    color: #71869a;
+
+    font-size: 10px;
+
+}
+
+
+/* =========================
+   HARDWARE
+========================= */
+
+.hardware {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 26%;
+
+}
+
+
+/* =========================
+   D-PAD
+========================= */
+
+.dpad {
+
+    position: absolute;
+
+    left: 6%;
+
+    top: 25%;
+
+    width: 130px;
+    height: 130px;
+
+}
+
+
+.dpad-button {
+
+    position: absolute;
+
+    width: 43px;
+    height: 43px;
+
+    border: 0;
+
+    background: #172331;
+
+    color: #aebdca;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    box-shadow:
+        inset 0 0 8px #000;
+
+}
+
+
+.dpad-button:active {
+
+    background: #294157;
+
+    color: white;
+
+}
+
+
+.up {
+    top: 0;
+    left: 43px;
+}
+
+
+.down {
+    bottom: 0;
+    left: 43px;
+}
+
+
+.left {
+    left: 0;
+    top: 43px;
+}
+
+
+.right {
+    right: 0;
+    top: 43px;
+}
+
+
+/* =========================
+   START SELECT
+========================= */
+
+.center-buttons {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 45%;
+
+    transform:
+        translateX(-50%);
+
+    display: flex;
+
+    gap: 15px;
+
+}
+
+
+.system-button {
+
+    padding:
+        7px 15px;
+
+    border: 0;
+
+    border-radius: 20px;
+
+    background: #182431;
+
+    color: #7f94a8;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.system-button:active {
+
+    background: #31465b;
+
+    color: white;
+
+}
+
+
+/* =========================
+   FACE BUTTONS
+========================= */
+
+.face-buttons {
+
+    position: absolute;
+
+    right: 6%;
+
+    top: 15%;
+
+    width: 150px;
+    height: 130px;
+
+}
+
+
+.face {
+
+    position: absolute;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid #304457;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1d2b3a,
+            #0e1721
+        );
+
+    color: white;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 8px #000;
+
+}
+
+
+.face:active {
+
+    transform:
+        translateY(3px);
+
+}
+
+
+.face.a {
+    right: 0;
+    top: 42px;
+}
+
+
+.face.b {
+    right: 50px;
+    top: 72px;
+}
+
+
+.face.x {
+    right: 50px;
+    top: 12px;
+}
+
+
+.face.y {
+    right: 100px;
+    top: 42px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px) {
+
+    #console {
+
+        width: 100vw;
+        height: 100vh;
+
+        border-radius: 0;
+
+        border: 0;
+
+        padding: 12px;
+
+    }
+
+
+    #screen {
+
+        height: 68%;
+
+    }
+
+
+    .platform {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .menu-item {
+
+        height: 100px;
+
+    }
+
+
+    .menu-item .icon {
+
+        font-size: 28px;
+
+    }
+
+
+    .hardware {
+
+        height: 29%;
+
+    }
+
+
+    .dpad {
+
+        left: 3%;
+
+        transform:
+            scale(.8);
+
+        transform-origin:
+            left top;
+
+    }
+
+
+    .face-buttons {
+
+        right: 3%;
+
+        transform:
+            scale(.8);
+
+        transform-origin:
+            right top;
+
+    }
+
+
+    footer {
+
+        font-size: 8px;
+
+    }
+
+}

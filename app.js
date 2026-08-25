@@ -28,241 +28,94 @@ const state = {
 
     booted: false,
 
+    screen: "main",
+
     selected: 0,
 
-    menuCount: 4,
+    systemSelected: 0,
 
-    asdLoaded: false,
+    romSelected: 0,
 
-    asdSize: 0,
-
-    elfOffset: -1,
-
-    keyDown: {}
+    menuCount: 5
 
 };
 
 
-/* =========================
-   ELEMENTS
-========================= */
+const systems = [
 
-const bootScreen =
-    document.getElementById("bootScreen");
+    {
+        name: "NES",
+        extensions: [".nes"],
+        folder: "roms/nes/"
+    },
 
-const bootText =
-    document.getElementById("bootText");
+    {
+        name: "SNES",
+        extensions: [".sfc", ".smc"],
+        folder: "roms/snes/"
+    },
 
-const progressBar =
-    document.getElementById("progressBar");
+    {
+        name: "GB",
+        extensions: [".gb"],
+        folder: "roms/gb/"
+    },
 
-const os =
-    document.getElementById("os");
+    {
+        name: "GBC",
+        extensions: [".gbc"],
+        folder: "roms/gbc/"
+    },
 
-const menuItems =
-    [...document.querySelectorAll(".menu-item")];
+    {
+        name: "GBA",
+        extensions: [".gba"],
+        folder: "roms/gba/"
+    },
 
-const infoText =
-    document.getElementById("infoText");
+    {
+        name: "PS1",
+        extensions: [".bin", ".cue", ".iso"],
+        folder: "roms/ps1/"
+    },
 
-
-/* =========================
-   BOOT
-========================= */
-
-async function bootGB300() {
-
-    const steps = [
-
-        ["POWER ON", 10],
-
-        ["CHECK MEMORY", 22],
-
-        ["LOAD LCFG", 38],
-
-        ["LOAD ASD", 55],
-
-        ["PARSE ELF", 70],
-
-        ["INITIALIZE VIDEO", 84],
-
-        ["INITIALIZE INPUT", 94],
-
-        ["START GB300 OS", 100]
-
-    ];
-
-
-    for (const step of steps) {
-
-        bootText.textContent =
-            step[0];
-
-        progressBar.style.width =
-            step[1] + "%";
-
-        await sleep(350);
-
+    {
+        name: "MAME",
+        extensions: [".zip"],
+        folder: "roms/mame/"
     }
 
-
-    await loadASD();
-
-
-    bootScreen.classList.add("hidden");
-
-    os.classList.remove("hidden");
-
-    state.booted = true;
-
-    updateMenu();
-
-}
+];
 
 
-/* =========================
-   ASD LOADER
-========================= */
+const roms = {
 
-async function loadASD() {
-
-    try {
-
-        const response =
-            await fetch("assets/system.asd", {
-                cache: "no-store"
-            });
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "system.asd not found"
-            );
-
+    NES: [
+        {
+            name: "Super Mario Bros.",
+            file: "roms/nes/Super Mario Bros.nes"
         }
+    ],
 
+    SNES: [],
 
-        const buffer =
-            await response.arrayBuffer();
+    GB: [],
 
+    GBC: [],
 
-        state.asdSize =
-            buffer.byteLength;
+    GBA: [],
 
+    PS1: [],
 
-        const data =
-            new Uint8Array(buffer);
+    MAME: []
 
+};
 
-        /*
-            LCFG
-
-            The supplied ASD starts
-            with the LCFG container.
-        */
-
-        const magic =
-            readASCII(data, 0, 4);
-
-
-        if (magic !== "LCFG") {
-
-            console.warn(
-                "ASD does not begin with LCFG"
-            );
-
-        }
-
-
-        /*
-            Locate ELF.
-
-            ELF magic:
-
-                7F 45 4C 46
-        */
-
-        state.elfOffset =
-            findELF(data);
-
-
-        state.asdLoaded = true;
-
-
-        console.log(
-            "GB300 ASD loaded:",
-            state.asdSize,
-            "bytes"
-        );
-
-
-        console.log(
-            "LCFG:",
-            magic
-        );
-
-
-        console.log(
-            "ELF offset:",
-            state.elfOffset
-        );
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        /*
-            Don't stop the web UI if the
-            ASD is missing while testing.
-        */
-
-        infoText.textContent =
-            "WEB OS đang chạy. " +
-            "Không tìm thấy assets/system.asd.";
-
-    }
-
-}
-
-
-/* =========================
-   ELF SEARCH
-========================= */
-
-function findELF(data) {
-
-    for (
-        let i = 0;
-        i < data.length - 4;
-        i++
-    ) {
-
-        if (
-            data[i] === 0x7f &&
-            data[i + 1] === 0x45 &&
-            data[i + 2] === 0x4c &&
-            data[i + 3] === 0x46
-        ) {
-
-            return i;
-
-        }
-
-    }
-
-
-    return -1;
-
-}
-
-
-/* =========================
-   MENU
-========================= */
 
 function updateMenu() {
+
+    if (state.screen !== "main")
+        return;
 
     menuItems.forEach(
         (item, index) => {
@@ -275,485 +128,225 @@ function updateMenu() {
         }
     );
 
-
-    const names = [
-
-        "Games",
-
-        "Favorites",
-
-        "Last Played",
-
-        "Tools"
-
-    ];
-
-
     infoText.textContent =
-
-        names[state.selected] +
-
-        " selected. " +
-
-        "Press A to open.";
-
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-function navigate(direction) {
-
-    if (!state.booted) {
-
-        return;
-
-    }
-
-
-    let next =
-        state.selected;
-
-
-    if (direction === "left") {
-
-        next--;
-
-    }
-
-
-    if (direction === "right") {
-
-        next++;
-
-    }
-
-
-    if (direction === "up") {
-
-        next -= 2;
-
-    }
-
-
-    if (direction === "down") {
-
-        next += 2;
-
-    }
-
-
-    /*
-        Wrap menu
-    */
-
-    if (next < 0) {
-
-        next =
-            state.menuCount - 1;
-
-    }
-
-
-    if (next >= state.menuCount) {
-
-        next = 0;
-
-    }
-
-
-    state.selected =
-        next;
-
-
-    updateMenu();
-
-}
-
-
-/* =========================
-   BUTTONS
-========================= */
-
-function pressButton(key) {
-
-    console.log(
-        "GB300 INPUT:",
-        key
-    );
-
-
-    if (!state.booted) {
-
-        return;
-
-    }
-
-
-    switch (key) {
-
-        case "ArrowUp":
-
-            navigate("up");
-
-            break;
-
-
-        case "ArrowDown":
-
-            navigate("down");
-
-            break;
-
-
-        case "ArrowLeft":
-
-            navigate("left");
-
-            break;
-
-
-        case "ArrowRight":
-
-            navigate("right");
-
-            break;
-
-
-        case "a":
-
-            selectCurrent();
-
-            break;
-
-
-        case "b":
-
-            goBack();
-
-            break;
-
-
-        case "x":
-
-            console.log("X");
-
-            break;
-
-
-        case "y":
-
-            console.log("Y");
-
-            break;
-
-
-        case "Start":
-
-            console.log(
-                "START"
-            );
-
-            break;
-
-
-        case "Select":
-
-            console.log(
-                "SELECT"
-            );
-
-            break;
-
-    }
-
-}
-
-
-/* =========================
-   SELECT
-========================= */
-
-function selectCurrent() {
-
-    const item =
-        menuItems[state.selected];
-
-    const name =
-        item
+        menuItems[state.selected]
             .querySelector(
                 "span:last-child"
             )
             .textContent;
 
-
-    infoText.textContent =
-        "Opening " +
-        name +
-        "...";
+}
 
 
-    console.log(
-        "SELECT:",
-        name
+function openRoms() {
+
+    state.screen = "systems";
+
+    document
+        .querySelector(".platform")
+        .classList.add("hidden");
+
+    document
+        .getElementById("info")
+        .classList.add("hidden");
+
+    const browser =
+        document.getElementById(
+            "romBrowser"
+        );
+
+    browser.classList.remove(
+        "hidden"
     );
 
-}
-
-
-/* =========================
-   BACK
-========================= */
-
-function goBack() {
-
-    infoText.textContent =
-        "Back";
+    renderSystems();
 
 }
 
 
-/* =========================
-   KEYBOARD
-========================= */
+function renderSystems() {
 
-window.addEventListener(
-    "keydown",
-    event => {
+    const container =
+        document.getElementById(
+            "systems"
+        );
 
-        let key =
-            event.key;
+    container.innerHTML = "";
 
+    systems.forEach(
+        (system, index) => {
 
-        /*
-            Prevent Chrome scrolling
-            when D-pad is used.
-        */
+            const button =
+                document.createElement(
+                    "button"
+                );
 
-        if (
-            [
-                "ArrowUp",
-                "ArrowDown",
-                "ArrowLeft",
-                "ArrowRight",
-                " "
-            ].includes(key)
-        ) {
+            button.className =
+                "rom-system";
 
-            event.preventDefault();
+            if (
+                index ===
+                state.systemSelected
+            ) {
 
-        }
-
-
-        /*
-            Avoid repeating key events.
-        */
-
-        if (state.keyDown[key]) {
-
-            return;
-
-        }
-
-
-        state.keyDown[key] =
-            true;
-
-
-        let mapped =
-            key;
-
-
-        switch (
-            key.toLowerCase()
-        ) {
-
-            case "z":
-
-                mapped = "a";
-
-                break;
-
-
-            case "x":
-
-                mapped = "b";
-
-                break;
-
-
-            case "a":
-
-                mapped = "x";
-
-                break;
-
-
-            case "s":
-
-                mapped = "y";
-
-                break;
-
-
-            case "enter":
-
-                mapped = "Start";
-
-                break;
-
-
-            case "shift":
-
-                mapped = "Select";
-
-                break;
-
-        }
-
-
-        pressButton(mapped);
-
-    }
-);
-
-
-window.addEventListener(
-    "keyup",
-    event => {
-
-        state.keyDown[
-            event.key
-        ] = false;
-
-    }
-);
-
-
-/* =========================
-   PHYSICAL BUTTONS
-========================= */
-
-document
-    .querySelectorAll(
-        "[data-key]"
-    )
-    .forEach(button => {
-
-
-        /*
-            Mouse
-        */
-
-        button.addEventListener(
-            "mousedown",
-            event => {
-
-                event.preventDefault();
-
-                pressButton(
-                    button.dataset.key
+                button.classList.add(
+                    "selected"
                 );
 
             }
-        );
 
+            button.textContent =
+                system.name;
 
-        /*
-            Touch
-        */
+            button.onclick = () => {
 
-        button.addEventListener(
-            "touchstart",
-            event => {
-
-                event.preventDefault();
-
-                pressButton(
-                    button.dataset.key
-                );
-
-            },
-            {
-                passive: false
-            }
-        );
-
-    });
-
-
-/* =========================
-   MENU MOUSE CLICK
-========================= */
-
-menuItems.forEach(
-    (item, index) => {
-
-        item.addEventListener(
-            "click",
-            () => {
-
-                state.selected =
+                state.systemSelected =
                     index;
 
-                updateMenu();
+                openSystem();
 
-                selectCurrent();
+            };
 
-            }
-        );
+            container.appendChild(
+                button
+            );
 
-    }
-);
-
-
-/* =========================
-   HELPERS
-========================= */
-
-function sleep(ms) {
-
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                ms
-            )
+        }
     );
 
 }
 
 
-function readASCII(
-    data,
-    start,
-    length
-) {
+function openSystem() {
 
-    let result = "";
+    state.screen = "roms";
 
-    for (
-        let i = start;
-        i < start + length;
-        i++
-    ) {
+    const system =
+        systems[state.systemSelected];
 
-        result +=
-            String.fromCharCode(
-                data[i]
+    const list =
+        document.getElementById(
+            "romList"
+        );
+
+    list.classList.remove(
+        "hidden"
+    );
+
+    list.innerHTML = "";
+
+    const games =
+        roms[system.name] || [];
+
+
+    const title =
+        document.createElement(
+            "div"
+        );
+
+    title.className =
+        "browser-title";
+
+    title.textContent =
+        system.name;
+
+    list.appendChild(title);
+
+
+    if (games.length === 0) {
+
+        const empty =
+            document.createElement(
+                "div"
             );
+
+        empty.className =
+            "empty";
+
+        empty.textContent =
+            "No ROMs installed.";
+
+        list.appendChild(empty);
+
+        return;
 
     }
 
-    return result;
+
+    games.forEach(
+        (game, index) => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "rom-item";
+
+            if (
+                index ===
+                state.romSelected
+            ) {
+
+                button.classList.add(
+                    "selected"
+                );
+
+            }
+
+            button.textContent =
+                game.name;
+
+            button.onclick = () => {
+
+                state.romSelected =
+                    index;
+
+                playRom(game);
+
+            };
+
+            list.appendChild(
+                button
+            );
+
+        }
+    );
 
 }
 
 
-/* =========================
-   START
-========================= */
+function playRom(game) {
 
-bootGB300();
+    console.log(
+        "GB300 PLAY:",
+        game.file
+    );
+
+    /*
+        Đây là điểm giao cho emulator core.
+
+        Sau này:
+        NES  -> NES WASM core
+        SNES -> SNES WASM core
+        GB   -> GB WASM core
+        GBA  -> GBA WASM core
+        PS1  -> PS1/QPSX WASM core
+        MAME -> MAME2000 WASM core
+    */
+
+    document.getElementById(
+        "bootText"
+    ).textContent =
+        "LOADING " + game.name;
+
+    alert(
+        "ROM selected:\\n\\n" +
+        game.name +
+        "\\n\\n" +
+        "Core: " +
+        systems[state.systemSelected].name
+    );
+
+}
